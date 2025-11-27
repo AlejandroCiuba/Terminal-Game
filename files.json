@@ -4,5 +4,6 @@
 		"contents": "Hello,\nThis is my first text file in this system!",
 		"permission": 0,
 		"parent": "documents",
+		"password": "12345",
 	},
 ]

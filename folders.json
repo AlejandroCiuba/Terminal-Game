@@ -7,6 +7,7 @@
 		],
 		"permission": 0,
 		"parent": "ROOT",
+		"password": "12345",
 	},
 	{
 		"name": "documents",
@@ -14,6 +15,7 @@
 		],
 		"permission": 1,
 		"parent": "~",
+		"password": "12345",
 	},
 	{
 		"name": "work-files",
@@ -21,6 +23,7 @@
 		],
 		"permission": 1,
 		"parent": "documents",
+		"password": "12345",
 	},
 	{
 		"name": "pictures",
@@ -28,5 +31,6 @@
 		],
 		"permission": 1,
 		"parent": "~",
+		"password": "12345",
 	},
 ]

@@ -5,6 +5,7 @@ extends Control
 
 @export var line: PackedScene
 @export var write_program: PackedScene
+@export var password_program: PackedScene
 
 @export var preamble: String = "hng43@desktop:"
 @export var path: String = "~"
@@ -16,10 +17,13 @@ var curr: Node = null
 var program: Node = null
 
 
-func _on_enter_program():
+func _on_enter_program(inline: bool = false):
 
-	%Lines.visible = false
-	self.add_child(program)
+	if inline:
+		%Lines.add_child(program)
+	else:
+		%Lines.visible = false
+		self.add_child(program)
 
 	program.exited.connect(_on_exit_subprogram)
 	self.set_process(false)
@@ -70,7 +74,11 @@ func fetch_item(dirpath: String) -> Directory.DirectoryItem:
 	if dirpath == "":
 		return Directory.current
 	else:
-		return Directory.valid_path(dirpath.split("/"))
+		var split: PackedStringArray = dirpath.split("/")
+		if split[0] == "~":
+			return Directory.valid_path(dirpath.split("/"), true)
+		else:
+			return Directory.valid_path(dirpath.split("/"))
 
 
 func process_command(input: Array):
@@ -92,7 +100,7 @@ func process_command(input: Array):
 		["nano", var file]:
 			nano(file)
 		["chmod", var file, var perms]:
-			chmod(file, perms)
+			await chmod(file, perms)
 		["clear"]:
 			clear()
 
@@ -104,8 +112,32 @@ func clear():
 		child.free()
 
 
-func chmod(file: String, perms: int):
-	pass
+func chmod(file: String, perms: String):
+
+	program = password_program.instantiate()
+	_on_enter_program(true)
+	var pwd: String = await program.password
+
+	var num_perm: int = 0
+	if perms == "READ":
+		num_perm = Directory.Permission.READ
+	elif perms == "WRITE":
+		num_perm = Directory.Permission.WRITE
+	elif perms == "NO_ACCESS":
+		num_perm = Directory.Permission.NO_ACCESS
+	else:
+		writeline("Permission type does not exist")
+		return
+
+	var node: Directory.DirectoryItem = Directory.change_permission(file.split("/"), num_perm, pwd)
+
+	if node == null:
+		writeline("File or Directory does not exist")
+	elif node.itemname == "NO ACCESS":
+		writeline("Incorrect Permissions")
+	else:
+		writeline("Permissions changed")
+
 
 func nano(file: String):
 
@@ -136,7 +168,15 @@ func nano(file: String):
 
 
 func touch(args: String):
-	var file: Directory.DirectoryItem = Directory.create_file(args.split("/"), Directory.Permission.WRITE)
+
+	var split: PackedStringArray = args.split("/")
+	var file: Directory.DirectoryItem = null
+
+	if split[0] == "~":
+		file = Directory.create_file(split, Directory.Permission.WRITE, true)
+	else:
+		file = Directory.create_file(split, Directory.Permission.WRITE)
+
 	if file == null:
 		writeline("Operation Failed.")
 	elif file.itemname == "NO ACCESS":
@@ -144,10 +184,18 @@ func touch(args: String):
 
 
 func mkdir(args: String):
-	var file: Directory.DirectoryItem = Directory.create_folder(args.split("/"), Directory.Permission.WRITE)
-	if file == null:
+
+	var split: PackedStringArray = args.split("/")
+	var folder: Directory.DirectoryItem = null
+
+	if split[0] == "~":
+		folder = Directory.create_folder(split, Directory.Permission.WRITE, true)
+	else:
+		folder = Directory.create_folder(split, Directory.Permission.WRITE)
+
+	if folder == null:
 		writeline("Operation Failed.")
-	elif file.itemname == "NO ACCESS":
+	elif folder.itemname == "NO ACCESS":
 		writeline("No permission to make Directory at location")
 
 
@@ -182,7 +230,12 @@ func cat(dirpath: String):
 
 func cd(dirpath: String):
 
-	var success: int = Directory.change_dir(dirpath.split("/"))
+	var split: PackedStringArray = dirpath.split("/")
+	var success: int = -1
+	if split[0] == "~":
+		success = Directory.change_dir(split, true)
+	else:
+		success = Directory.change_dir(split)
 
 	if success == 0:
 		writeline("No such Directory")
@@ -239,6 +292,6 @@ func _process(delta: float) -> void:
 
 		var text = Array(curr.get_child(1).text.split(" "))
 
-		process_command(text)
+		await process_command(text)
 		newline_with_header()
 		set_focus()

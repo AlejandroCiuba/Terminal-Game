@@ -6,13 +6,15 @@ class DirectoryItem:
 	var permission: Permission
 	var parent: String
 	var contents = null
+	var password: String
 
-	func _init(itemname: String, contents, permission: Permission, parent: String) -> void:
+	func _init(itemname: String, contents, permission: Permission, parent: String, password: String) -> void:
 
 		self.itemname = itemname
 		self.permission = permission
 		self.parent = parent
 		self.contents = contents
+		self.password = password
 
 	func contents_string() -> String:
 		return ""
@@ -33,8 +35,8 @@ class Folder extends DirectoryItem:
 
 	#var contents: PackedStringArray
 
-	func _init(dirname: String, contents: PackedStringArray, permission: Permission, parent: String) -> void:
-		super._init(dirname, contents, permission, parent)
+	func _init(dirname: String, contents: PackedStringArray, permission: Permission, parent: String, password: String) -> void:
+		super._init(dirname, contents, permission, parent, password)
 
 	func contents_string() -> String:
 		return " ".join(self.contents)
@@ -44,8 +46,8 @@ class File extends DirectoryItem:
 
 	#var contents: String
 
-	func _init(filename: String, contents: String, permission: Permission, parent: String) -> void:
-		super._init(filename, contents, permission, parent)
+	func _init(filename: String, contents: String, permission: Permission, parent: String, password: String) -> void:
+		super._init(filename, contents, permission, parent, password)
 
 
 enum Permission {
@@ -54,11 +56,17 @@ enum Permission {
 	NO_ACCESS,
 }
 
-var table = {}  # Typed dictionaries require elements
+# JSON to get simulation data
 var files: FileAccess = FileAccess.open("res://files.json", FileAccess.READ)
 var folders: FileAccess = FileAccess.open("res://folders.json", FileAccess.READ)
-var current: Folder
-var failure: DirectoryItem = DirectoryItem.new("NO ACCESS", null, 2, "")  # Returned if the operation is incomplete due to permissions
+
+# File system is a dictionary that the user access as if it were a tree
+var table = {}  # Typed dictionaries require elements
+var current: Folder  # Node the file system is focused on
+var home: Folder  # The root folder
+
+var pseudo_root: Folder  # A fake folder whose child is the root folder (but root's parent is null); makes tracing easier
+var failure: DirectoryItem = DirectoryItem.new("NO ACCESS", null, 2, "", "")  # Returned if the operation is incomplete due to permissions
 
 func create_directory():
 
@@ -68,7 +76,7 @@ func create_directory():
 
 	# Create the folders
 	for folder in dir:
-		table[folder["name"]] = Folder.new(folder["name"], [], folder["permission"], folder["parent"])
+		table[folder["name"]] = Folder.new(folder["name"], [], folder["permission"], folder["parent"], folder["password"])
 
 	# Link them together
 	for folder in dir:
@@ -77,19 +85,21 @@ func create_directory():
 			table[folder["name"]].parent = folder["parent"]
 		elif folder["parent"] == "ROOT" and table.has(folder["name"]):
 			current = table[folder["name"]]
+			home = current
+			pseudo_root = Folder.new("PSEUDO", [folder["name"]], 0, "", "")
 
 	var fs = JSON.parse_string(files.get_as_text())
 
 	# Create the files; must have file extension if they share a name with a folder
 	for f in fs:
-		table[f["name"]] = File.new(f["name"], f["contents"], f["permission"], f["parent"])
+		table[f["name"]] = File.new(f["name"], f["contents"], f["permission"], f["parent"], f["password"])
 		# Link files to parents
 		table[f["parent"]].contents.append(f["name"])
 
 
-func create_folder(path: PackedStringArray, permission: Permission) -> DirectoryItem:
+func create_folder(path: PackedStringArray, permission: Permission, absolute: bool = false) -> DirectoryItem:
 
-	var parent: DirectoryItem = valid_path(path.slice(0, -1))
+	var parent: DirectoryItem = valid_path(path.slice(0, -1), absolute)
 	var dirname: String = path[-1]
 
 	if parent == null or parent is not Folder:
@@ -99,14 +109,14 @@ func create_folder(path: PackedStringArray, permission: Permission) -> Directory
 	if dirname in parent.contents:
 		return null
 
-	table[dirname] = Folder.new(dirname, [], permission, parent.itemname)
+	table[dirname] = Folder.new(dirname, [], permission, parent.itemname, "")
 	parent.contents.append(dirname)
 	return table[dirname]
 
 
-func create_file(path: PackedStringArray, permission: Permission) -> DirectoryItem:
+func create_file(path: PackedStringArray, permission: Permission, absolute: bool = false) -> DirectoryItem:
 
-	var parent: DirectoryItem = valid_path(path.slice(0, -1))
+	var parent: DirectoryItem = valid_path(path.slice(0, -1), absolute)
 	var filename: String = path[-1]
 
 	if parent == null or parent is not Folder:
@@ -116,14 +126,20 @@ func create_file(path: PackedStringArray, permission: Permission) -> DirectoryIt
 	if filename in parent.contents:
 		return null
 
-	table[filename] = File.new(filename, "", permission, parent.itemname)
+	table[filename] = File.new(filename, "", permission, parent.itemname, "")
 	parent.contents.append(filename)
 	return table[filename]
 
 
-func path_exists(path: PackedStringArray) -> bool:
+## Ignores file permissions; returns true if the path exists.
+func path_exists(path: PackedStringArray, absolute: bool = false) -> bool:
 
-	var start: DirectoryItem = current
+	var start: DirectoryItem = null
+	if absolute:
+		start = pseudo_root  # Start at pseudo_root since we check the current folder's children
+	else:
+		start = current
+
 	var path_pos: int = 0
 	for folder in path:
 		match folder:
@@ -150,12 +166,16 @@ func path_exists(path: PackedStringArray) -> bool:
 
 	return true
 
+## Returns the node if accessible (checks permissions); returns null if the node does not exist; returns failure node if no permissions.
+func valid_path(path: PackedStringArray, absolute: bool = false) -> DirectoryItem:
 
-func valid_path(path: PackedStringArray) -> DirectoryItem:
+	var start: DirectoryItem = null
+	if absolute:
+		start = pseudo_root
+	else:
+		start = current
 
-	var start: DirectoryItem = current
 	var path_pos: int = 0
-
 	for folder in path:
 		match folder:
 			".":
@@ -186,9 +206,9 @@ func valid_path(path: PackedStringArray) -> DirectoryItem:
 	return start
 
 
-func change_dir(path: PackedStringArray) -> int:
+func change_dir(path: PackedStringArray, absolute: bool = false) -> int:
 
-	var end = valid_path(path)
+	var end = valid_path(path, absolute)
 	if end != null and end is not File:
 		if end.itemname == "NO ACCESS":
 			return 2
@@ -200,34 +220,45 @@ func change_dir(path: PackedStringArray) -> int:
 		return 0
 
 
-func change_permission(path: PackedStringArray, permission: Permission) -> DirectoryItem:
-	return null
-	#var start: DirectoryItem = current
-	#var path_pos: int = 0
-#
-	#for folder in path:
-		#match folder:
-			#".":
-				#start = start
-			#"..":
-				#if start.parent != "ROOT":
-					#start = table[start.parent]
-				#else:
-					#return null
-			#var name:
-				#if name in start.contents:
-#
-					#if table[name].permission == Permission.NO_ACCESS:
-						#return failure
-#
-					#if table[name] is Folder:
-						#start = table[name]
-					#elif table[name] is File:
-						#if path[-1] == name:  # Final elemnt in the path can be a file
-							#start = table[name]
-				#else:
-					#return failure
-#
-		#path_pos += 1
-#
-	#return start
+func change_permission(path: PackedStringArray, permission: Permission, password: String, absolute: bool = false) -> DirectoryItem:
+
+	var start: DirectoryItem = null
+	if absolute:
+		start = pseudo_root
+	else:
+		start = current
+
+	var path_pos: int = 0
+	for folder in path:
+		match folder:
+			".":
+				start = start
+			"..":
+				if start.parent != "ROOT":
+					start = table[start.parent]
+				else:
+					return null
+			var name:
+				if name in start.contents:
+
+					if table[name].permission == Permission.NO_ACCESS and path_pos < len(path) - 1:
+						return failure
+
+					if table[name] is Folder:
+						start = table[name]
+					elif table[name] is File:
+						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
+							start = table[name]
+						else:
+							return null
+				else:
+					return null
+
+		path_pos += 1
+
+	if password == start.password:
+		start.permission = permission
+	else:
+		return failure
+
+	return start
