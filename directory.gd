@@ -141,8 +141,11 @@ func path_exists(path: PackedStringArray) -> bool:
 					elif table[name] is File:
 						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
 							start = table[name]
+						else:
+							return false
 				else:
 					return false
+
 		path_pos += 1
 
 	return true
@@ -173,6 +176,8 @@ func valid_path(path: PackedStringArray) -> DirectoryItem:
 					elif table[name] is File:
 						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
 							start = table[name]
+						else:
+							return null
 				else:
 					return null
 
