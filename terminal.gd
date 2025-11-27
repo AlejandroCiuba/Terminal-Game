@@ -84,9 +84,14 @@ func fetch_item(dirpath: String) -> Directory.DirectoryItem:
 func process_command(input: Array):
 	match input:
 		["ls"]:
-			ls("")
-		["ls", var path]:
-			ls(path)
+			ls("", "")
+		["ls", var args]:
+			if args.begins_with("-"):  # Commands assume flags have been parsed correctly by the process_command function
+				ls("", args)
+			else:
+				ls(args, "")
+		["ls", var path, var args]:
+			ls(path, args)
 		["cd", var path]:
 			cd(path)
 		["cat", var path]:
@@ -133,7 +138,7 @@ func chmod(file: String, perms: String):
 
 	if node == null:
 		writeline("File or Directory does not exist")
-	elif node.itemname == "NO ACCESS":
+	elif node.permission == Directory.Permission.NO_ACCESS:
 		writeline("Incorrect Permissions")
 	else:
 		writeline("Permissions changed")
@@ -179,7 +184,7 @@ func touch(args: String):
 
 	if file == null:
 		writeline("Operation Failed.")
-	elif file.itemname == "NO ACCESS":
+	elif file.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to make file at location")
 
 
@@ -195,7 +200,7 @@ func mkdir(args: String):
 
 	if folder == null:
 		writeline("Operation Failed.")
-	elif folder.itemname == "NO ACCESS":
+	elif folder.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to make Directory at location")
 
 
@@ -213,7 +218,7 @@ func cat(dirpath: String):
 		error()
 		return
 
-	if node.itemname == "NO ACCESS":
+	if node.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to view file contents")
 		return
 
@@ -231,15 +236,15 @@ func cat(dirpath: String):
 func cd(dirpath: String):
 
 	var split: PackedStringArray = dirpath.split("/")
-	var success: int = -1
+	var node: Directory.DirectoryItem
 	if split[0] == "~":
-		success = Directory.change_dir(split, true)
+		node = Directory.change_dir(split, true)
 	else:
-		success = Directory.change_dir(split)
+		node = Directory.change_dir(split)
 
-	if success == 0:
+	if node == null:
 		writeline("No such Directory")
-	elif success == 2:
+	elif node.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to enter Directory")
 
 	else:
@@ -248,7 +253,7 @@ func cd(dirpath: String):
 		path = "/".join(trace)
 
 
-func ls(dirpath: String):
+func ls(dirpath: String, args: String):
 
 	# Fetch the directory item
 	var node: Directory.DirectoryItem = fetch_item(dirpath)
@@ -257,7 +262,7 @@ func ls(dirpath: String):
 		error()
 		return
 
-	if node.itemname == "NO ACCESS":
+	if node.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to view contents")
 		return
 
@@ -265,18 +270,31 @@ func ls(dirpath: String):
 		writeline(node.itemname)
 		return
 
-	var contents: Array = node.contents
 	var text: String = ""
 	var index: int = 0
-	for item in contents:
 
-		print_debug(item)
-		text += " " + item
-		index += 1
+	if "l" in args:
+		# TABS DON'T WORK IN LINEEDIT
+		writeline("Permission        Name        Type")
 
-		if index % 3 == 0 or index == len(contents):
+		var contents: Dictionary = Directory.get_contents_metadata(node)
+		for item in contents:
+			text = ("%d\t1%s\t2%s" % [contents[item][0], item, contents[item][1]])\
+			.replace("\t1", " ".repeat(17)).replace("\t2", " ".repeat(12 - len(item)))
 			writeline(text)
-			text = ""
+
+	else:
+
+		var contents: Array = node.contents
+		for item in contents:
+
+			print_debug(item)
+			text += " " + item
+			index += 1
+
+			if index % 3 == 0 or index == len(contents):
+				writeline(text)
+				text = ""
 
 
 func _ready() -> void:

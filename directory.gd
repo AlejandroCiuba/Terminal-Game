@@ -66,7 +66,7 @@ var current: Folder  # Node the file system is focused on
 var home: Folder  # The root folder
 
 var pseudo_root: Folder  # A fake folder whose child is the root folder (but root's parent is null); makes tracing easier
-var failure: DirectoryItem = DirectoryItem.new("NO ACCESS", null, 2, "", "")  # Returned if the operation is incomplete due to permissions
+var failure: DirectoryItem = DirectoryItem.new("NO_ACCESS", null, 2, "", "")  # Returned if the operation is incomplete due to permissions
 
 func create_directory():
 
@@ -97,6 +97,7 @@ func create_directory():
 		table[f["parent"]].contents.append(f["name"])
 
 
+## Returns the item if successful, the failure DirectoryItem if no permissions, and null otherwise
 func create_folder(path: PackedStringArray, permission: Permission, absolute: bool = false) -> DirectoryItem:
 
 	var parent: DirectoryItem = valid_path(path.slice(0, -1), absolute)
@@ -114,6 +115,7 @@ func create_folder(path: PackedStringArray, permission: Permission, absolute: bo
 	return table[dirname]
 
 
+## Returns the item if successful, the failure DirectoryItem if no permissions, and null otherwise
 func create_file(path: PackedStringArray, permission: Permission, absolute: bool = false) -> DirectoryItem:
 
 	var parent: DirectoryItem = valid_path(path.slice(0, -1), absolute)
@@ -166,6 +168,7 @@ func path_exists(path: PackedStringArray, absolute: bool = false) -> bool:
 
 	return true
 
+
 ## Returns the node if accessible (checks permissions); returns null if the node does not exist; returns failure node if no permissions.
 func valid_path(path: PackedStringArray, absolute: bool = false) -> DirectoryItem:
 
@@ -206,18 +209,11 @@ func valid_path(path: PackedStringArray, absolute: bool = false) -> DirectoryIte
 	return start
 
 
-func change_dir(path: PackedStringArray, absolute: bool = false) -> int:
+## Returns the item if successful, the failure DirectoryItem if no permissions, and null otherwise
+func change_dir(path: PackedStringArray, absolute: bool = false) -> DirectoryItem:
 
 	var end = valid_path(path, absolute)
-	if end != null and end is not File:
-		if end.itemname == "NO ACCESS":
-			return 2
-
-		current = end
-		return 1
-
-	else:
-		return 0
+	return null
 
 
 func change_permission(path: PackedStringArray, permission: Permission, password: String, absolute: bool = false) -> DirectoryItem:
@@ -262,3 +258,19 @@ func change_permission(path: PackedStringArray, permission: Permission, password
 		return failure
 
 	return start
+
+
+## Returns the metadata of the children for a specific node as a Dictionary
+func get_contents_metadata(node: Folder) -> Dictionary:
+
+	var contents: Dictionary = {}
+	for item in node.contents:
+
+		var diritem: DirectoryItem = table[item]
+
+		if diritem is Folder:
+			contents[item] = [diritem.permission, "Folder"]
+		elif diritem is File:
+			contents[item] = [diritem.permission, "File"]
+
+	return contents

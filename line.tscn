@@ -18,3 +18,4 @@ expand_to_text_length = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_084u5")
+caret_blink = true
