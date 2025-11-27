@@ -57,8 +57,8 @@ enum Permission {
 }
 
 # JSON to get simulation data
-var files: FileAccess = FileAccess.open("res://files.json", FileAccess.READ)
-var folders: FileAccess = FileAccess.open("res://folders.json", FileAccess.READ)
+var files: FileAccess = FileAccess.open("res://data/files.json", FileAccess.READ)
+var folders: FileAccess = FileAccess.open("res://data/folders.json", FileAccess.READ)
 
 # File system is a dictionary that the user access as if it were a tree
 var table = {}  # Typed dictionaries require elements
@@ -67,6 +67,7 @@ var home: Folder  # The root folder
 
 var pseudo_root: Folder  # A fake folder whose child is the root folder (but root's parent is null); makes tracing easier
 var failure: DirectoryItem = DirectoryItem.new("NO_ACCESS", null, 2, "", "")  # Returned if the operation is incomplete due to permissions
+
 
 func create_directory():
 

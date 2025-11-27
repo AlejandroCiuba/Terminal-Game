@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bdulhagpo3r46"]
 
-[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://terminal.tres" id="1_084u5"]
+[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://style/terminal.tres" id="1_m1m1d"]
 
 [node name="Line" type="HBoxContainer"]
 anchors_preset = 10
@@ -10,12 +10,12 @@ grow_horizontal = 2
 
 [node name="Header" type="LineEdit" parent="."]
 layout_mode = 2
-theme = ExtResource("1_084u5")
+theme = ExtResource("1_m1m1d")
 editable = false
 expand_to_text_length = true
 
 [node name="Body" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("1_084u5")
+theme = ExtResource("1_m1m1d")
 caret_blink = true

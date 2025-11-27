@@ -1,6 +1,14 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dgly0ah5t47l8"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://dgly0ah5t47l8"]
 
-[ext_resource type="FontFile" uid="uid://denrhubukgvcx" path="res://Terminal F4.ttf" id="1_26roo"]
+[ext_resource type="FontFile" uid="uid://denrhubukgvcx" path="res://style/Terminal F4.ttf" id="1_26roo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_26roo"]
+bg_color = Color(0, 0.79237, 0.219333, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o1drw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6tdq8"]
+bg_color = Color(0, 0.79237, 0.219333, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_26roo"]
 
@@ -14,8 +22,21 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0uqvb"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ja666"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ft04l"]
+
 [resource]
 default_font = ExtResource("1_26roo")
+Button/colors/font_color = Color(0, 0.79237, 0.219333, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+Button/styles/focus = SubResource("StyleBoxFlat_26roo")
+Button/styles/hover = SubResource("StyleBoxFlat_26roo")
+Button/styles/normal = SubResource("StyleBoxEmpty_o1drw")
+Button/styles/pressed = SubResource("StyleBoxFlat_6tdq8")
+CodeEdit/colors/line_number_color = Color(0, 0.788464, 0.219333, 1)
 Label/colors/font_color = Color(0, 0.796277, 0.219333, 1)
 LineEdit/colors/caret_color = Color(0, 0.796277, 0.219333, 1)
 LineEdit/colors/font_color = Color(0, 0.796277, 0.219333, 1)
@@ -35,3 +56,5 @@ TextEdit/colors/selection_color = Color(0.00390631, 0.780652, 0.219333, 1)
 TextEdit/styles/focus = SubResource("StyleBoxEmpty_froon")
 TextEdit/styles/normal = SubResource("StyleBoxEmpty_rdsj4")
 TextEdit/styles/read_only = SubResource("StyleBoxEmpty_0uqvb")
+VScrollBar/styles/scroll = SubResource("StyleBoxEmpty_ja666")
+VScrollBar/styles/scroll_focus = SubResource("StyleBoxEmpty_ft04l")

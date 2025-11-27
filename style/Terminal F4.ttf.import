@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://denrhubukgvcx"
-path="res://.godot/imported/Terminal F4.ttf-8e62dac19d21c27ff1f3527ac507005a.fontdata"
+path="res://.godot/imported/Terminal F4.ttf-6912863e4e9aed909ad1d3ded9bd790e.fontdata"
 
 [deps]
 
-source_file="res://Terminal F4.ttf"
-dest_files=["res://.godot/imported/Terminal F4.ttf-8e62dac19d21c27ff1f3527ac507005a.fontdata"]
+source_file="res://style/Terminal F4.ttf"
+dest_files=["res://.godot/imported/Terminal F4.ttf-6912863e4e9aed909ad1d3ded9bd790e.fontdata"]
 
 [params]
 

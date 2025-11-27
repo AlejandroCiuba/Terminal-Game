@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://dntnrm5r5rndr"]
 
-[ext_resource type="PackedScene" uid="uid://vxhjf5malp6c" path="res://terminal.tscn" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://vxhjf5malp6c" path="res://programs/terminal.tscn" id="1_ig7tw"]
 
-[node name="Control" type="Control"]
+[node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

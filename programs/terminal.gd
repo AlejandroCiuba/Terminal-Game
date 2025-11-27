@@ -4,6 +4,8 @@ extends Control
 # Directory simulation is separate from the Terminal UI
 
 @export var line: PackedScene
+
+# Programs the terminal can access; they are split between full-screen and inline programs
 @export var write_program: PackedScene
 @export var password_program: PackedScene
 

@@ -17,7 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Directory="*res://directory.gd"
+Directory="*res://globals/directory.gd"
+Manager="*res://globals/manager.gd"
 
 [input]
 

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://d3jiypepxyk5v"]
 
-[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://terminal.tres" id="1_7on1g"]
-[ext_resource type="Script" uid="uid://btbnpvimck51u" path="res://nano.gd" id="1_th0jo"]
+[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://style/terminal.tres" id="1_7on1g"]
+[ext_resource type="Script" uid="uid://btbnpvimck51u" path="res://programs/nano.gd" id="1_th0jo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_th0jo"]
 bg_color = Color(0, 0.79237, 0.219333, 1)
@@ -46,7 +46,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_macq2")
 text = "Placeholder"
 horizontal_alignment = 2
 
-[node name="Editor" type="TextEdit" parent="VBoxContainer"]
+[node name="Editor" type="CodeEdit" parent="VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -54,6 +54,7 @@ size_flags_vertical = 3
 theme = ExtResource("1_7on1g")
 caret_type = 1
 caret_blink = true
+gutters_draw_line_numbers = true
 
 [node name="Footer" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
