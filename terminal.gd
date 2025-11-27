@@ -91,9 +91,21 @@ func process_command(input: Array):
 			touch(args)
 		["nano", var file]:
 			nano(file)
+		["chmod", var file, var perms]:
+			chmod(file, perms)
 		["clear"]:
 			clear()
 
+
+func clear():
+
+	curr = null
+	for child in %Lines.get_children():
+		child.free()
+
+
+func chmod(file: String, perms: int):
+	pass
 
 func nano(file: String):
 
@@ -101,8 +113,13 @@ func nano(file: String):
 	var node: Directory.DirectoryItem = fetch_item(file)
 
 	if node == null:
-		error()
-		return
+
+		touch(file)
+		node = fetch_item(file)
+
+		if node == null:
+			writeline("File could not be created.")
+			return
 
 	elif node is Directory.Folder:
 		writeline(node.itemname + " is a Directory")
@@ -118,19 +135,20 @@ func nano(file: String):
 	_on_enter_program()
 
 
-func clear():
-
-	curr = null
-	for child in %Lines.get_children():
-		child.free()
-
-
 func touch(args: String):
-	Directory.create_file(args.split("/"), Directory.Permission.WRITE)
+	var file: Directory.DirectoryItem = Directory.create_file(args.split("/"), Directory.Permission.WRITE)
+	if file == null:
+		writeline("Operation Failed.")
+	elif file.itemname == "NO ACCESS":
+		writeline("No permission to make file at location")
 
 
 func mkdir(args: String):
-	Directory.create_folder(args.split("/"), Directory.Permission.WRITE)
+	var file: Directory.DirectoryItem = Directory.create_folder(args.split("/"), Directory.Permission.WRITE)
+	if file == null:
+		writeline("Operation Failed.")
+	elif file.itemname == "NO ACCESS":
+		writeline("No permission to make Directory at location")
 
 
 func echo(text: Array):
@@ -147,7 +165,11 @@ func cat(dirpath: String):
 		error()
 		return
 
-	elif node is Directory.Folder:
+	if node.itemname == "NO ACCESS":
+		writeline("No permission to view file contents")
+		return
+
+	if node is Directory.Folder:
 		writeline(node.itemname + " is a Directory")
 		return
 
@@ -160,10 +182,12 @@ func cat(dirpath: String):
 
 func cd(dirpath: String):
 
-	var success: bool = Directory.change_dir(dirpath.split("/"))
+	var success: int = Directory.change_dir(dirpath.split("/"))
 
-	if not success:
+	if success == 0:
 		writeline("No such Directory")
+	elif success == 2:
+		writeline("No permission to enter Directory")
 
 	else:
 		var trace: PackedStringArray = Directory.current.trace()
@@ -180,7 +204,11 @@ func ls(dirpath: String):
 		error()
 		return
 
-	elif node is Directory.File:
+	if node.itemname == "NO ACCESS":
+		writeline("No permission to view contents")
+		return
+
+	if node is Directory.File:
 		writeline(node.itemname)
 		return
 
