@@ -124,6 +124,7 @@ func create_file(path: PackedStringArray, permission: Permission) -> DirectoryIt
 func path_exists(path: PackedStringArray) -> bool:
 
 	var start: DirectoryItem = current
+	var path_pos: int = 0
 	for folder in path:
 		match folder:
 			".":
@@ -138,10 +139,11 @@ func path_exists(path: PackedStringArray) -> bool:
 					if table[name] is Folder:
 						start = table[name]
 					elif table[name] is File:
-						if path[-1] == name:  # Final elemnt in the path can be a file
+						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
 							start = table[name]
 				else:
 					return false
+		path_pos += 1
 
 	return true
 
