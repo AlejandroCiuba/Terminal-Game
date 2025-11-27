@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3jiypepxyk5v"]
+
+[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://terminal.tres" id="1_7on1g"]
+[ext_resource type="Script" uid="uid://btbnpvimck51u" path="res://nano.gd" id="1_th0jo"]
+
+[node name="nano" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_th0jo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Editor" type="TextEdit" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_7on1g")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Controls" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_7on1g")
+text = "^X: Quit     ^O: Write     "
+
+[node name="Suboptions" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_7on1g")
+editable = false

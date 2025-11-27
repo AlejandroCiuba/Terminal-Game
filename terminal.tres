@@ -1,0 +1,37 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://dgly0ah5t47l8"]
+
+[ext_resource type="FontFile" uid="uid://denrhubukgvcx" path="res://Terminal F4.ttf" id="1_26roo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_26roo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6tdq8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uqe2u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_froon"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rdsj4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0uqvb"]
+
+[resource]
+default_font = ExtResource("1_26roo")
+Label/colors/font_color = Color(0, 0.796277, 0.219333, 1)
+LineEdit/colors/caret_color = Color(0, 0.796277, 0.219333, 1)
+LineEdit/colors/font_color = Color(0, 0.796277, 0.219333, 1)
+LineEdit/colors/font_selected_color = Color(0, 0, 0, 1)
+LineEdit/colors/font_uneditable_color = Color(1.44392e-07, 0.800025, 0.219373, 1)
+LineEdit/colors/selection_color = Color(0, 0.772824, 0.211521, 1)
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_26roo")
+LineEdit/styles/normal = SubResource("StyleBoxEmpty_6tdq8")
+LineEdit/styles/read_only = SubResource("StyleBoxEmpty_uqe2u")
+TextEdit/colors/background_color = Color(0, 0, 0, 0)
+TextEdit/colors/caret_background_color = Color(0, 0, 0, 0)
+TextEdit/colors/caret_color = Color(0, 0.796277, 0.219333, 1)
+TextEdit/colors/current_line_color = Color(0.25098, 0.25098, 0.258824, 0)
+TextEdit/colors/font_color = Color(0.00390631, 0.784558, 0.219333, 1)
+TextEdit/colors/font_selected_color = Color(0, 0, 0, 1)
+TextEdit/colors/selection_color = Color(0.00390631, 0.780652, 0.219333, 1)
+TextEdit/styles/focus = SubResource("StyleBoxEmpty_froon")
+TextEdit/styles/normal = SubResource("StyleBoxEmpty_rdsj4")
+TextEdit/styles/read_only = SubResource("StyleBoxEmpty_0uqvb")

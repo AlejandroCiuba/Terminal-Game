@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://vxhjf5malp6c"]
+
+[ext_resource type="Script" uid="uid://doev4mlfiurm1" path="res://terminal.gd" id="1_sxuvd"]
+[ext_resource type="PackedScene" uid="uid://bdulhagpo3r46" path="res://line.tscn" id="2_7d6gb"]
+[ext_resource type="PackedScene" uid="uid://d3jiypepxyk5v" path="res://nano.tscn" id="3_b5qft"]
+
+[node name="Terminal" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 6
+script = ExtResource("1_sxuvd")
+line = ExtResource("2_7d6gb")
+write_program = ExtResource("3_b5qft")
+
+[node name="Lines" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

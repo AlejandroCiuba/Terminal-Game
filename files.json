@@ -1,0 +1,8 @@
+[
+	{
+		"name": "hello_world.txt",
+		"contents": "Hello,\nThis is my first text file in this system!",
+		"permission": 0,
+		"parent": "documents",
+	},
+]

@@ -1,0 +1,32 @@
+[
+	{
+		"name": "~",
+		"contents": [
+			"documents",
+			"pictures",
+		],
+		"permission": 0,
+		"parent": "ROOT",
+	},
+	{
+		"name": "documents",
+		"contents": [
+		],
+		"permission": 1,
+		"parent": "~",
+	},
+	{
+		"name": "work-files",
+		"contents": [
+		],
+		"permission": 1,
+		"parent": "documents",
+	},
+	{
+		"name": "pictures",
+		"contents": [
+		],
+		"permission": 1,
+		"parent": "~",
+	},
+]
