@@ -65,7 +65,6 @@ func newline_with_header():
 
 
 func writeline(text: String, header: bool = false):
-
 	newline()
 	if header:
 		header()
@@ -248,7 +247,6 @@ func cd(dirpath: String):
 		writeline("No such Directory")
 	elif node.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to enter Directory")
-
 	else:
 		var trace: PackedStringArray = Directory.current.trace()
 		trace.reverse()

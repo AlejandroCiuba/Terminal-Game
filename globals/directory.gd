@@ -212,9 +212,11 @@ func valid_path(path: PackedStringArray, absolute: bool = false) -> DirectoryIte
 
 ## Returns the item if successful, the failure DirectoryItem if no permissions, and null otherwise
 func change_dir(path: PackedStringArray, absolute: bool = false) -> DirectoryItem:
-
 	var end = valid_path(path, absolute)
-	return null
+	if end != null:
+		if end.permission != Permission.NO_ACCESS:
+			current = end
+	return end
 
 
 func change_permission(path: PackedStringArray, permission: Permission, password: String, absolute: bool = false) -> DirectoryItem:
