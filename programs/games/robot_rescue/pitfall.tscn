@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3b2gqb0yymi1"]
+
+[sub_resource type="GDScript" id="GDScript_yr2o1"]
+script/source = "extends Area2D
+
+signal body_fell(body: Node2D)
+
+
+func _on_body_entered(body: Node2D) -> void:
+	body_fell.emit(body)
+"
+
+[node name="Pitfall" type="Area2D"]
+collision_layer = 8
+script = SubResource("GDScript_yr2o1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
