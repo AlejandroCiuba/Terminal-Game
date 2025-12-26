@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://vxhjf5malp6c"]
 
-[ext_resource type="Script" uid="uid://doev4mlfiurm1" path="res://programs/terminal.gd" id="1_sxuvd"]
-[ext_resource type="PackedScene" uid="uid://bdulhagpo3r46" path="res://programs/line.tscn" id="2_7d6gb"]
-[ext_resource type="PackedScene" uid="uid://d3jiypepxyk5v" path="res://programs/nano.tscn" id="3_b5qft"]
-[ext_resource type="PackedScene" uid="uid://dncb7kkd4igvq" path="res://programs/password.tscn" id="4_0u45f"]
+[ext_resource type="Script" uid="uid://doev4mlfiurm1" path="res://programs/main/terminal.gd" id="1_sxuvd"]
+[ext_resource type="PackedScene" uid="uid://bdulhagpo3r46" path="res://programs/main/line.tscn" id="2_7d6gb"]
+[ext_resource type="PackedScene" uid="uid://d3jiypepxyk5v" path="res://programs/main/nano.tscn" id="3_b5qft"]
+[ext_resource type="PackedScene" uid="uid://dncb7kkd4igvq" path="res://programs/main/password.tscn" id="4_0u45f"]
 
 [node name="Terminal" type="Control"]
 layout_mode = 3

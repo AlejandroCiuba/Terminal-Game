@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Terminal"
-run/main_scene="uid://dntnrm5r5rndr"
+run/main_scene="uid://dmq7w5er3kvxg"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-Directory="*res://globals/directory.gd"
-Manager="*res://globals/manager.gd"
+Directory="*res://common/globals/directory.gd"
+Manager="*res://common/globals/manager.gd"
 
 [input]
 

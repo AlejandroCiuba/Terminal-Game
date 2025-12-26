@@ -53,14 +53,14 @@ class File extends DirectoryItem:
 
 
 enum Permission {
+	NO_ACCESS,
 	READ,
 	WRITE,
-	NO_ACCESS,
 }
 
 # JSON to get simulation data
-var files: FileAccess = FileAccess.open("res://data/files.json", FileAccess.READ)
-var folders: FileAccess = FileAccess.open("res://data/folders.json", FileAccess.READ)
+var files: FileAccess = FileAccess.open("res://common/data/files.json", FileAccess.READ)
+var folders: FileAccess = FileAccess.open("res://common/data/folders.json", FileAccess.READ)
 
 # File system is a dictionary that the user access as if it were a tree
 var table = {}  # Typed dictionaries require elements

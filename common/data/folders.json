@@ -5,7 +5,7 @@
 			"documents",
 			"pictures",
 		],
-		"permission": 1,
+		"permission": 2,
 		"parent": "ROOT",
 		"password": "12345",
 	},

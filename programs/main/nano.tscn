@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://d3jiypepxyk5v"]
 
-[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://style/terminal.tres" id="1_7on1g"]
-[ext_resource type="Script" uid="uid://btbnpvimck51u" path="res://programs/nano.gd" id="1_th0jo"]
+[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://common/style/terminal.tres" id="1_7on1g"]
+[ext_resource type="Script" uid="uid://btbnpvimck51u" path="res://programs/main/nano.gd" id="1_th0jo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_th0jo"]
 bg_color = Color(0, 0.79237, 0.219333, 1)

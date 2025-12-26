@@ -1,0 +1,9 @@
+[
+	{
+		"name": "README.txt",
+		"contents": "To whom it may concern,\n\nI hope you enjoy yourself here. I liked to keep things organized and simple, and, thus, I made everything myself. The UI is minimal and the graphics, efficient. The terminal you interact with is only loosely based off the terminals you would see on your standard UNIX OS. And while the commands are similar, I have tailored them to more pricisely fit my needs:\n\nls [-l] [PATH]: List the contents of PATH or the current directory if no path is provided.\ncat [FILE]: Output the contents of a file onto the terminal display.\ntouch [FILE]: Create an editable file.\nnano [FILE]: Edit files (that exist or do not exist).\nmkdir [PATH]: Make a directory with the name at the end of the provided PATH.\n\nAs much as I would love for that to be all, I felt obligated to tell you of one last command.\n\nchmod [FILE|PATH] [READ|WRITE|NO ACCESS]: The chmod will allow you to change the permissions on any given file or folder.\n\nI would ask that whatever you do with this machine, that you keep yourself separate from myself - that my world should stay in its own solar system and that yours to your own. I wish you the best in your endevours.\n\nYours truly,\nMozzy",
+		"permission": 2,
+		"parent": "~",
+		"password": "12345",
+	},
+]

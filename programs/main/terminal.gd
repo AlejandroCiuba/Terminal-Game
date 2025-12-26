@@ -2,9 +2,11 @@ extends Control
 # Programs are packedscenes and inherit from Program
 # Each command is designed to be self-contained
 # Directory simulation is separate from the Terminal UI
-var can_rapid_scroll: bool = false
-var rapid_scroll_wait: float = 1.0
+const MAX_DISPLAY_LENGTH = 75
+
+const rapid_scroll_wait: float = 1.0
 var rapid_scroll_press: float = 0.0
+var can_rapid_scroll: bool = false
 
 var cmd_hst: PackedStringArray = PackedStringArray([""])
 var hstind: int = 0
@@ -238,7 +240,11 @@ func cat(dirpath: String):
 	print_debug(contents)
 
 	for ln in contents:
-		writeline(ln)
+		if len(ln) <= MAX_DISPLAY_LENGTH:
+			writeline(ln)
+		else:
+			for i in range(0, len(ln), MAX_DISPLAY_LENGTH):
+				writeline(ln.substr(i, min(MAX_DISPLAY_LENGTH, len(ln) - i)))
 
 
 func cd(dirpath: String):
