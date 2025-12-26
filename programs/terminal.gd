@@ -2,6 +2,15 @@ extends Control
 # Programs are packedscenes and inherit from Program
 # Each command is designed to be self-contained
 # Directory simulation is separate from the Terminal UI
+var can_rapid_scroll: bool = false
+var rapid_scroll_wait: float = 1.0
+var rapid_scroll_press: float = 0.0
+
+var cmd_hst: PackedStringArray = PackedStringArray([""])
+var hstind: int = 0
+
+var curr: Node = null
+var program: Node = null
 
 @export var line: PackedScene
 
@@ -13,26 +22,25 @@ extends Control
 @export var path: String = "~"
 @export var postfix: String = "$"
 
+@warning_ignore("unused_signal")
 signal on_enter
 
-var curr: Node = null
-var program: Node = null
+
+func get_cmdline() -> LineEdit:
+	return curr.get_child(1)
 
 
-func _on_enter_program(inline: bool = false):
-
+func enter_program(inline: bool = false):
 	if inline:
 		%Lines.add_child(program)
 	else:
 		%Lines.visible = false
 		self.add_child(program)
-
 	program.exited.connect(_on_exit_subprogram)
 	self.set_process(false)
 
 
 func _on_exit_subprogram():
-
 	%Lines.visible = true
 	set_process(true)
 	set_focus()
@@ -51,10 +59,8 @@ func header():
 
 
 func newline():
-
 	if curr != null:
 		curr.get_child(1).editable = false
-
 	curr = line.instantiate()
 	%Lines.add_child(curr)
 
@@ -64,9 +70,9 @@ func newline_with_header():
 	header()
 
 
-func writeline(text: String, header: bool = false):
+func writeline(text: String, hdr: bool = false):
 	newline()
-	if header:
+	if hdr:
 		header()
 	curr.get_child(1).text = text
 
@@ -91,12 +97,14 @@ func process_command(input: Array):
 				ls("", args)
 			else:
 				ls(args, "")
-		["ls", var path, var args]:
-			ls(path, args)
-		["cd", var path]:
-			cd(path)
-		["cat", var path]:
-			cat(path)
+		["ls", var pth, var args]:
+			ls(pth, args)
+		["cd", var pth]:
+			cd(pth)
+		["cd"]:
+			cd("~")
+		["cat", var pth]:
+			cat(pth)
 		["echo", ..]:
 			echo(input)
 		["mkdir", var args]:
@@ -112,7 +120,6 @@ func process_command(input: Array):
 
 
 func clear():
-
 	curr = null
 	for child in %Lines.get_children():
 		child.free()
@@ -121,7 +128,7 @@ func clear():
 func chmod(file: String, perms: String):
 
 	program = password_program.instantiate()
-	_on_enter_program(true)
+	enter_program(true)
 	var pwd: String = await program.password
 
 	var num_perm: int = 0
@@ -170,7 +177,7 @@ func nano(file: String):
 	program = write_program.instantiate()
 	program.file = node
 
-	_on_enter_program()
+	enter_program()
 
 
 func touch(args: String):
@@ -206,8 +213,8 @@ func mkdir(args: String):
 
 
 func echo(text: Array):
-	var line: String = " ".join(PackedStringArray(text.slice(1)))
-	writeline(line)
+	var ln: String = " ".join(PackedStringArray(text.slice(1)))
+	writeline(ln)
 
 
 func cat(dirpath: String):
@@ -230,8 +237,8 @@ func cat(dirpath: String):
 	var contents: PackedStringArray = node.contents.split("\n")
 	print_debug(contents)
 
-	for line in contents:
-		writeline(line)
+	for ln in contents:
+		writeline(ln)
 
 
 func cd(dirpath: String):
@@ -302,14 +309,35 @@ func _ready() -> void:
 	Directory.create_directory()
 	newline_with_header()
 	set_focus()
+	
+	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_text_caret_up") or (event.is_action("ui_text_caret_up") and can_rapid_scroll):
+		hstind = (hstind - 1) % len(cmd_hst)
+		get_cmdline().text = cmd_hst[hstind]
+		get_cmdline().caret_column = get_cmdline().text.length()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("ui_text_caret_down") or (event.is_action("ui_text_caret_down") and can_rapid_scroll):
+		hstind = (hstind + 1) % len(cmd_hst)
+		get_cmdline().text = cmd_hst[hstind]
+		get_cmdline().caret_column = get_cmdline().text.length()
+		get_viewport().set_input_as_handled()
 
 
+# _process over _input for set_focus()
 func _process(delta: float) -> void:
+	
+	if Input.is_action_pressed("ui_text_caret_up") or Input.is_action_pressed("ui_text_caret_down"):
+		rapid_scroll_press += delta
+	elif Input.is_action_just_released("ui_text_caret_up") or Input.is_action_just_released("ui_text_caret_up"):
+		can_rapid_scroll = false
+		rapid_scroll_press = 0
+	if rapid_scroll_press >= rapid_scroll_wait:
+		can_rapid_scroll = true
 
 	if Input.is_action_just_pressed("new_line"):
-
+		cmd_hst.append(curr.get_child(1).text)
 		var text = Array(curr.get_child(1).text.split(" "))
-
 		await process_command(text)
 		newline_with_header()
 		set_focus()

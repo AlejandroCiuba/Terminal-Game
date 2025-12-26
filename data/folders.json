@@ -5,7 +5,7 @@
 			"documents",
 			"pictures",
 		],
-		"permission": 0,
+		"permission": 1,
 		"parent": "ROOT",
 		"password": "12345",
 	},
@@ -13,7 +13,7 @@
 		"name": "documents",
 		"contents": [
 		],
-		"permission": 1,
+		"permission": 2,
 		"parent": "~",
 		"password": "12345",
 	},
@@ -21,7 +21,7 @@
 		"name": "work-files",
 		"contents": [
 		],
-		"permission": 1,
+		"permission": 2,
 		"parent": "documents",
 		"password": "12345",
 	},
@@ -29,7 +29,7 @@
 		"name": "pictures",
 		"contents": [
 		],
-		"permission": 1,
+		"permission": 2,
 		"parent": "~",
 		"password": "12345",
 	},

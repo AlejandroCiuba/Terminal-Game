@@ -8,6 +8,7 @@ class DirectoryItem:
 	var contents = null
 	var password: String
 
+	@warning_ignore("shadowed_variable")
 	func _init(itemname: String, contents, permission: Permission, parent: String, password: String) -> void:
 
 		self.itemname = itemname
@@ -20,21 +21,21 @@ class DirectoryItem:
 		return ""
 
 	func trace() -> PackedStringArray:
-
-		var trace: PackedStringArray = PackedStringArray([self.itemname])
+		var trc: PackedStringArray = PackedStringArray([self.itemname])
 		if self.parent != "ROOT":
 			var curr: DirectoryItem = Directory.table[self.parent]
 			while curr != null:
-				trace.append(curr.itemname)
+				trc.append(curr.itemname)
 				curr = Directory.table[curr.parent]
 
-		return trace
+		return trc
 
 
 class Folder extends DirectoryItem:
 
-	#var contents: PackedStringArray
+	#var _contents: PackedStringArray
 
+	@warning_ignore("shadowed_variable_base_class")
 	func _init(dirname: String, contents: PackedStringArray, permission: Permission, parent: String, password: String) -> void:
 		super._init(dirname, contents, permission, parent, password)
 
@@ -44,8 +45,9 @@ class Folder extends DirectoryItem:
 
 class File extends DirectoryItem:
 
-	#var contents: String
+	#var _contents: String
 
+	@warning_ignore("shadowed_variable_base_class")
 	func _init(filename: String, contents: String, permission: Permission, parent: String, password: String) -> void:
 		super._init(filename, contents, permission, parent, password)
 
@@ -66,7 +68,7 @@ var current: Folder  # Node the file system is focused on
 var home: Folder  # The root folder
 
 var pseudo_root: Folder  # A fake folder whose child is the root folder (but root's parent is null); makes tracing easier
-var failure: DirectoryItem = DirectoryItem.new("NO_ACCESS", null, 2, "", "")  # Returned if the operation is incomplete due to permissions
+var failure: DirectoryItem = DirectoryItem.new("NO_ACCESS", null, Permission.NO_ACCESS, "", "")  # Returned if the operation is incomplete due to permissions
 
 
 func create_directory():
@@ -87,7 +89,7 @@ func create_directory():
 		elif folder["parent"] == "ROOT" and table.has(folder["name"]):
 			current = table[folder["name"]]
 			home = current
-			pseudo_root = Folder.new("PSEUDO", [folder["name"]], 0, "", "")
+			pseudo_root = Folder.new("PSEUDO", [folder["name"]], Permission.READ, "", "")
 
 	var fs = JSON.parse_string(files.get_as_text())
 
@@ -153,13 +155,13 @@ func path_exists(path: PackedStringArray, absolute: bool = false) -> bool:
 					start = table[start.parent]
 				else:
 					return false
-			var name:
-				if name in start.contents:
-					if table[name] is Folder:
-						start = table[name]
-					elif table[name] is File:
-						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
-							start = table[name]
+			var folder_name:
+				if folder_name in start.contents:
+					if table[folder_name] is Folder:
+						start = table[folder_name]
+					elif table[folder_name] is File:
+						if path[-1] == folder_name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
+							start = table[folder_name]
 						else:
 							return false
 				else:
@@ -189,17 +191,17 @@ func valid_path(path: PackedStringArray, absolute: bool = false) -> DirectoryIte
 					start = table[start.parent]
 				else:
 					return null
-			var name:
-				if name in start.contents:
+			var folder_name:
+				if folder_name in start.contents:
 
-					if table[name].permission == Permission.NO_ACCESS:
+					if table[folder_name].permission == Permission.NO_ACCESS:
 						return failure
 
-					if table[name] is Folder:
-						start = table[name]
-					elif table[name] is File:
-						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
-							start = table[name]
+					if table[folder_name] is Folder:
+						start = table[folder_name]
+					elif table[folder_name] is File:
+						if path[-1] == folder_name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
+							start = table[folder_name]
 						else:
 							return null
 				else:
@@ -237,17 +239,17 @@ func change_permission(path: PackedStringArray, permission: Permission, password
 					start = table[start.parent]
 				else:
 					return null
-			var name:
-				if name in start.contents:
+			var folder_name:
+				if folder_name in start.contents:
 
-					if table[name].permission == Permission.NO_ACCESS and path_pos < len(path) - 1:
+					if table[folder_name].permission == Permission.NO_ACCESS and path_pos < len(path) - 1:
 						return failure
 
-					if table[name] is Folder:
-						start = table[name]
-					elif table[name] is File:
-						if path[-1] == name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
-							start = table[name]
+					if table[folder_name] is Folder:
+						start = table[folder_name]
+					elif table[folder_name] is File:
+						if path[-1] == folder_name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
+							start = table[folder_name]
 						else:
 							return null
 				else:

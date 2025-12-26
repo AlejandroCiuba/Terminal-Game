@@ -11,7 +11,7 @@ func _ready() -> void:
 	entered.emit()
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 
 	if Input.is_key_pressed(KEY_CTRL):
 		%Editor.release_focus()
