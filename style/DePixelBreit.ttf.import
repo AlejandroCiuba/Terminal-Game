@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://denrhubukgvcx"
-path="res://.godot/imported/Terminal F4.ttf-6912863e4e9aed909ad1d3ded9bd790e.fontdata"
+uid="uid://3li0nyk8502r"
+path="res://.godot/imported/DePixelBreit.ttf-88e2d9da1637472836932157d08971c9.fontdata"
 
 [deps]
 
-source_file="res://style/Terminal F4.ttf"
-dest_files=["res://.godot/imported/Terminal F4.ttf-6912863e4e9aed909ad1d3ded9bd790e.fontdata"]
+source_file="res://style/DePixelBreit.ttf"
+dest_files=["res://.godot/imported/DePixelBreit.ttf-88e2d9da1637472836932157d08971c9.fontdata"]
 
 [params]
 
