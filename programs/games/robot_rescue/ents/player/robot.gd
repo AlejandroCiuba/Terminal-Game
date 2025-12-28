@@ -2,6 +2,8 @@ extends CharacterBody2D
 # I checked https://indiegameacademy.com/how-to-make-a-smooth-movement-system-for-a-2d-platformer-in-godot/ 
 # to see if animations could be played in the _physics_process
 
+signal player_died
+
 var disable_movement: bool = false
 var coyote_timer: float = 0.0
 const COYOTE_THRESHOLD = 0.1
@@ -57,12 +59,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		_weapon.position.x = _weapon_flip * -1
 	
-	if is_on_floor() and Input.is_action_just_pressed("shoot"):
+	if not disable_movement and is_on_floor() and Input.is_action_just_pressed("shoot"):
 		_weapon.fire(Vector2(-1 if _anim.flip_h else 1, 0.0))
 
 
 func _on_no_health() -> void:
+	if disable_movement:  # Check to avoid repeating animation
+		return
 	print_debug("Game Over")
 	set_process(false)
 	disable_movement = true
+	velocity.x = 0.0
 	_anim.play("die")
+	await _anim.animation_finished
+	player_died.emit()

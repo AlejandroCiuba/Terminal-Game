@@ -52,6 +52,17 @@ class File extends DirectoryItem:
 		super._init(filename, contents, permission, parent, password)
 
 
+class Exec extends DirectoryItem:
+	
+	#var _contents: PackedScene
+	@warning_ignore("shadowed_variable_base_class")
+	func _init(filename: String, contents: PackedScene, permission: Permission, parent: String, password: String) -> void:
+		super._init(filename, contents, permission, parent, password)
+
+
+var execs: Array[PackedScene] = [preload("res://programs/games/robot_rescue/screens/main_menu.tscn")]
+
+
 enum Permission {
 	NO_ACCESS,
 	READ,
@@ -59,6 +70,7 @@ enum Permission {
 }
 
 # JSON to get simulation data
+var fexs: FileAccess = FileAccess.open("res://common/data/execs.json", FileAccess.READ)
 var files: FileAccess = FileAccess.open("res://common/data/files.json", FileAccess.READ)
 var folders: FileAccess = FileAccess.open("res://common/data/folders.json", FileAccess.READ)
 
@@ -98,7 +110,14 @@ func create_directory():
 		table[f["name"]] = File.new(f["name"], f["contents"], f["permission"], f["parent"], f["password"])
 		# Link files to parents
 		table[f["parent"]].contents.append(f["name"])
-
+		
+		
+	var es = JSON.parse_string(fexs.get_as_text())
+	
+	# Create the execs
+	for e in es:
+		table[e["name"]] = Exec.new(e["name"], execs[e["contents"] as int], e["permission"], e["parent"], e["password"])
+		table[e["parent"]].contents.append(e["name"])
 
 ## Returns the item if successful, the failure DirectoryItem if no permissions, and null otherwise
 func create_folder(path: PackedStringArray, permission: Permission, absolute: bool = false) -> DirectoryItem:
@@ -199,7 +218,7 @@ func valid_path(path: PackedStringArray, absolute: bool = false) -> DirectoryIte
 
 					if table[folder_name] is Folder:
 						start = table[folder_name]
-					elif table[folder_name] is File:
+					elif table[folder_name] is File or table[folder_name] is Exec:
 						if path[-1] == folder_name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
 							start = table[folder_name]
 						else:
@@ -277,5 +296,7 @@ func get_contents_metadata(node: Folder) -> Dictionary:
 			contents[item] = [diritem.permission, "Folder"]
 		elif diritem is File:
 			contents[item] = [diritem.permission, "File"]
+		elif diritem is Exec:
+			contents[item] = [diritem.permission, "Executable"]
 
 	return contents

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Terminal"
-run/main_scene="uid://c37q2x5cn0eqr"
+run/main_scene="uid://dmq7w5er3kvxg"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -76,8 +76,10 @@ shoot={
 2d_physics/layer_1="player"
 2d_physics/layer_2="enemies"
 2d_physics/layer_3="robots"
-2d_physics/layer_4="environment"
+2d_physics/layer_4="environment hazardss"
 2d_physics/layer_5="lasers"
+2d_physics/layer_6="alert boxes"
+2d_physics/layer_7="player laser"
 
 [rendering]
 

@@ -42,6 +42,12 @@ func enter_program(inline: bool = false):
 	self.set_process(false)
 
 
+func _on_exit_program():
+	program.exited.disconnect(_on_exit_program)
+	(func (): program.free()).call_deferred()
+	_on_exit_subprogram()
+
+
 func _on_exit_subprogram():
 	%Lines.visible = true
 	set_process(true)
@@ -117,6 +123,8 @@ func process_command(input: Array):
 			nano(file)
 		["chmod", var file, var perms]:
 			await chmod(file, perms)
+		["run", var file]:
+			run(file)
 		["clear"]:
 			clear()
 
@@ -125,6 +133,32 @@ func clear():
 	curr = null
 	for child in %Lines.get_children():
 		child.free()
+
+
+func run(file: String):
+	# Fetch the directory item
+	var node: Directory.DirectoryItem = fetch_item(file)
+
+	if node == null:
+		writeline("File does not exist.")
+		return
+
+	elif node is Directory.Folder:
+		writeline(node.itemname + " is a Directory")
+		return
+
+	elif node is Directory.File:
+		writeline(node.itemname + " is a non-executable File")
+		return
+
+	# Command successful, launch program
+	if curr != null:
+		curr.get_child(1).editable = false
+
+	program = node.contents.instantiate()
+	program.exited.connect(_on_exit_program)
+
+	enter_program()
 
 
 func chmod(file: String, perms: String):
@@ -311,7 +345,6 @@ func ls(dirpath: String, args: String):
 
 
 func _ready() -> void:
-
 	Directory.create_directory()
 	newline_with_header()
 	set_focus()

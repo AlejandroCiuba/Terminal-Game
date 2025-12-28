@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="LaserData" load_steps=2 format=3 uid="uid://dvd0jvlle4fl2"]
+
+[ext_resource type="Script" uid="uid://bgnn88k7kcl4b" path="res://programs/games/robot_rescue/common/resources/laser_data.gd" id="1_hsigx"]
+
+[resource]
+script = ExtResource("1_hsigx")
+laser_collision_layer = 16
+laser_collision_mask = 13
+metadata/_custom_type_script = "uid://bgnn88k7kcl4b"

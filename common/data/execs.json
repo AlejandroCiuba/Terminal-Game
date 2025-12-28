@@ -1,0 +1,9 @@
+[
+	{
+		"name": "ROBOT_RESCUE",
+		"contents": 0,
+		"permission": 2,
+		"parent": "~",
+		"password": "12345",
+	},
+]

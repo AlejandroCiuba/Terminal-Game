@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c563k38cbgfie"]
 
-[ext_resource type="Script" uid="uid://d3rgbtdp1sp7t" path="res://programs/games/robot_rescue/laser.gd" id="1_ibtg3"]
-[ext_resource type="SpriteFrames" uid="uid://crefx3d0bw1ql" path="res://programs/games/robot_rescue/laser.tres" id="1_nhp5p"]
+[ext_resource type="Script" uid="uid://d3rgbtdp1sp7t" path="res://programs/games/robot_rescue/ents/other/laser.gd" id="1_ibtg3"]
+[ext_resource type="SpriteFrames" uid="uid://crefx3d0bw1ql" path="res://programs/games/robot_rescue/common/resources/laser.tres" id="1_nhp5p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ibtg3"]
 size = Vector2(10, 3)
