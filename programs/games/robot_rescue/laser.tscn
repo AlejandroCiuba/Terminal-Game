@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3 uid="uid://c563k38cbgfie"]
+
+[ext_resource type="Script" uid="uid://d3rgbtdp1sp7t" path="res://programs/games/robot_rescue/laser.gd" id="1_ibtg3"]
+[ext_resource type="SpriteFrames" uid="uid://crefx3d0bw1ql" path="res://programs/games/robot_rescue/laser.tres" id="1_nhp5p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ibtg3"]
+size = Vector2(10, 3)
+
+[node name="Laser" type="Area2D"]
+collision_layer = 16
+collision_mask = 15
+script = ExtResource("1_ibtg3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+modulate = Color(0, 0.7921569, 0.21960784, 1)
+sprite_frames = ExtResource("1_nhp5p")
+animation = &"hit"
+frame = 4
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 5.5)
+shape = SubResource("RectangleShape2D_ibtg3")
+
+[connection signal="area_entered" from="." to="." method="_on_hit"]
+[connection signal="body_entered" from="." to="." method="_on_hit"]

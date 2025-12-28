@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b58wrwnd1spvr"]
+
+[ext_resource type="Script" uid="uid://b2i72u47edlxe" path="res://programs/games/robot_rescue/weapon.gd" id="1_p6yne"]
+
+[node name="Weapon" type="Node2D" groups=["weapons"]]
+script = ExtResource("1_p6yne")

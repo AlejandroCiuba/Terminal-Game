@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Terminal"
-run/main_scene="uid://dmq7w5er3kvxg"
+run/main_scene="uid://c37q2x5cn0eqr"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -25,6 +25,10 @@ Manager="*res://common/globals/manager.gd"
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"
 window/stretch/scale_mode="integer"
+
+[global_group]
+
+weapons=""
 
 [input]
 
@@ -71,8 +75,9 @@ shoot={
 
 2d_physics/layer_1="player"
 2d_physics/layer_2="enemies"
-2d_physics/layer_3="robot"
-2d_physics/layer_4="obstacles"
+2d_physics/layer_3="robots"
+2d_physics/layer_4="environment"
+2d_physics/layer_5="lasers"
 
 [rendering]
 
