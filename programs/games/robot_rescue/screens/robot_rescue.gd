@@ -5,6 +5,7 @@ extends Node2D
 @onready var hazards: Node2D = $Hazards
 @onready var lasers: Node2D = $Lasers
 @onready var camera: Camera2D = %PlayerCamera
+@onready var game_over: Control = %GameOver
 
 func _on_body_fell(body: Node2D) -> void:
 	if body.is_in_group("player"):
@@ -22,3 +23,4 @@ func _ready() -> void:
 
 func _on_player_died() -> void:
 	print_debug("Game Over")
+	game_over.show()

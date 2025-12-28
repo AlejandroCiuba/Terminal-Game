@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=4 uid="uid://c37q2x5cn0eqr"]
+[gd_scene load_steps=7 format=4 uid="uid://c37q2x5cn0eqr"]
 
 [ext_resource type="TileSet" uid="uid://xwbfaqoj3hyv" path="res://common/style/robot_rescue_tiles.tres" id="1_6c7dx"]
 [ext_resource type="Script" uid="uid://dsrc4rycvhiq6" path="res://programs/games/robot_rescue/screens/robot_rescue.gd" id="1_a1nre"]
 [ext_resource type="PackedScene" uid="uid://rwb4nj42mpxm" path="res://programs/games/robot_rescue/ents/player/robot.tscn" id="2_6c7dx"]
 [ext_resource type="PackedScene" uid="uid://engkey00jmu8" path="res://programs/games/robot_rescue/ents/enemies/scientist.tscn" id="4_oc15g"]
+[ext_resource type="PackedScene" uid="uid://cy37m371mmi1y" path="res://programs/games/robot_rescue/screens/game_over.tscn" id="5_q5cta"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1nre"]
 size = Vector2(1221, 48)
@@ -64,5 +65,10 @@ position = Vector2(698, 399)
 _speed = 50.0
 _jump = -600.0
 _turn_timer = 1.5
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="GameOver" parent="UI" instance=ExtResource("5_q5cta")]
+unique_name_in_owner = true
 
 [connection signal="player_died" from="Robot" to="." method="_on_player_died"]
