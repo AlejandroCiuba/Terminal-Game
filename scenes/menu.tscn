@@ -22,7 +22,46 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="TitleScreen" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -73.0
+offset_right = 200.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="TitleScreen"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 64
+text = ">Terminal"
+
+[node name="Start" type="Button" parent="TitleScreen"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Start"
+
+[node name="Credits" type="Button" parent="TitleScreen"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Credits"
+
+[node name="CreditsScreen" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -31,29 +70,46 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Title" type="Label" parent="VBoxContainer"]
-unique_name_in_owner = true
+[node name="MarginContainer" type="MarginContainer" parent="CreditsScreen"]
 layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("2_con2f")
-theme_override_font_sizes/font_size = 64
-text = ">Terminal"
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="Start" type="Button" parent="VBoxContainer"]
+[node name="Text" type="Label" parent="CreditsScreen/MarginContainer"]
+custom_minimum_size = Vector2(10, 10)
 layout_mode = 2
-size_flags_horizontal = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Made by Alejandro Ciuba for the Toy Box Game Jam 2025 hosted by ThatTomHall on itch.io. I didn't have as much time as I would have liked, so I apologize for the short game, and if there are any major bugs.
+
+The assets used throughout this game were gotten from solving the puzzles at the start of the jam. I utilized the sprites and tilesets from the Free Sci-Fi Platformer 1-Bit Pixel Art Game Kit found on craftpix.net.
+
+The fonts used are DePixelBreit by ingoFonts and ARCADE_I by Yuji Adachi."
+autowrap_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CreditsScreen"]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="CreditsScreen/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
 text = "Start"
 
-[node name="Quit" type="Button" parent="VBoxContainer"]
+[node name="Title" type="Button" parent="CreditsScreen/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
-text = "Quit"
+text = "Title
+"
 
-[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="VBoxContainer/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="TitleScreen/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="TitleScreen/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="CreditsScreen/HBoxContainer/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CreditsScreen/HBoxContainer/Title" to="." method="_on_title_pressed"]

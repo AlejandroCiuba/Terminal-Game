@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2yb4jhahv8up"]
+
+[ext_resource type="Script" uid="uid://d2je4dy7d1e5h" path="res://programs/games/robot_rescue/ents/other/dialog.gd" id="1_k7irm"]
+[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://common/style/terminal.tres" id="1_mg3kk"]
+[ext_resource type="StyleBox" uid="uid://uco6vkc0t3p" path="res://common/style/game_over.tres" id="2_k7irm"]
+
+[node name="Dialog" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_k7irm")
+text = "Hello, this is a test.
+How are you?"
+speed = 0.025
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -49.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_mg3kk")
+theme_override_styles/panel = ExtResource("2_k7irm")
+
+[node name="Text" type="RichTextLabel" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_mg3kk")
+theme_override_colors/default_color = Color(0, 0.7921569, 0.21960784, 1)
+theme_override_font_sizes/normal_font_size = 32
+text = "PLACEHOLDER TEXT"
+fit_content = true
+autowrap_mode = 0

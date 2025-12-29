@@ -3,6 +3,8 @@ extends Control
 
 @export var type_delay: float = 2.0
 @export var title: String = "Terminal"
+@onready var title_screen: Control = %TitleScreen
+@onready var credits_screen: Control = %CreditsScreen
 
 
 func _on_timeout(letter: String):
@@ -10,6 +12,8 @@ func _on_timeout(letter: String):
 
 
 func _ready():
+	title_screen.show()
+	credits_screen.hide()
 	%Title.text = ""
 
 	for letter in title:
@@ -21,5 +25,11 @@ func _on_start_pressed() -> void:
 	Manager.change_scene("res://scenes/main.tscn")
 
 
-func _on_quit_pressed() -> void:
-	get_tree().quit()
+func _on_title_pressed() -> void:
+	title_screen.show()
+	credits_screen.hide()
+
+
+func _on_credits_pressed() -> void:
+	credits_screen.show()
+	title_screen.hide()

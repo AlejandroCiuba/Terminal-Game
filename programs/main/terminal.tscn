@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://vxhjf5malp6c"]
+[gd_scene load_steps=6 format=3 uid="uid://vxhjf5malp6c"]
 
 [ext_resource type="Script" uid="uid://doev4mlfiurm1" path="res://programs/main/terminal.gd" id="1_sxuvd"]
 [ext_resource type="PackedScene" uid="uid://bdulhagpo3r46" path="res://programs/main/line.tscn" id="2_7d6gb"]
 [ext_resource type="PackedScene" uid="uid://d3jiypepxyk5v" path="res://programs/main/nano.tscn" id="3_b5qft"]
 [ext_resource type="PackedScene" uid="uid://dncb7kkd4igvq" path="res://programs/main/password.tscn" id="4_0u45f"]
+[ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://common/style/terminal.tres" id="5_mghkd"]
 
 [node name="Terminal" type="Control"]
 layout_mode = 3
@@ -28,11 +29,16 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Lines" type="VBoxContainer" parent="."]
-unique_name_in_owner = true
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_mghkd")
+
+[node name="Lines" type="VBoxContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

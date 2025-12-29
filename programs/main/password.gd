@@ -1,4 +1,4 @@
-extends Program
+extends InLineProgram
 
 signal password(pwd: String)
 

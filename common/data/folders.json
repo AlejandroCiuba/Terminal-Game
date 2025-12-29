@@ -3,7 +3,6 @@
 		"name": "~",
 		"contents": [
 			"documents",
-			"pictures",
 		],
 		"permission": 2,
 		"parent": "ROOT",
@@ -12,25 +11,21 @@
 	{
 		"name": "documents",
 		"contents": [
+			"a-simpleton.txt",
+			"dont-you-dare.txt"
 		],
-		"permission": 2,
+		"permission": 0,
 		"parent": "~",
-		"password": "12345",
+		"password": "S1MPLEKEY",
 	},
 	{
-		"name": "work-files",
+		"name": "not-for-you",
 		"contents": [
+			"ROBOT_RESCUE",
+			"cat-bag.txt",
 		],
-		"permission": 2,
+		"permission": 0,
 		"parent": "documents",
-		"password": "12345",
-	},
-	{
-		"name": "pictures",
-		"contents": [
-		],
-		"permission": 2,
-		"parent": "~",
-		"password": "12345",
+		"password": "myworld",
 	},
 ]

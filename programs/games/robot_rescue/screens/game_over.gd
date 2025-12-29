@@ -1,7 +1,7 @@
 extends Control
 
 signal retry_in_game
-signal exited_in_game
+signal exit_in_game
 
 func _ready() -> void:
 	hide()
@@ -12,4 +12,4 @@ func _on_retry_pressed() -> void:
 
 
 func _on_quit_pressed() -> void:
-	exited_in_game.emit()
+	exit_in_game.emit()

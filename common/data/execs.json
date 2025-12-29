@@ -3,7 +3,7 @@
 		"name": "ROBOT_RESCUE",
 		"contents": 0,
 		"permission": 2,
-		"parent": "~",
+		"parent": "not-for-you",
 		"password": "12345",
 	},
 ]

@@ -4,6 +4,8 @@ extends Control
 # Directory simulation is separate from the Terminal UI
 const MAX_DISPLAY_LENGTH = 75
 
+var can_end: bool = false
+
 const rapid_scroll_wait: float = 1.0
 var rapid_scroll_press: float = 0.0
 var can_rapid_scroll: bool = false
@@ -125,6 +127,8 @@ func process_command(input: Array):
 			await chmod(file, perms)
 		["run", var file]:
 			run(file)
+		["rm", var file]:
+			remove(file)
 		["clear"]:
 			clear()
 
@@ -133,6 +137,14 @@ func clear():
 	curr = null
 	for child in %Lines.get_children():
 		child.free()
+
+
+func remove(file: String):
+	if file != "~" or not can_end:
+		writeline("Files are not removable on this operating system")
+		return
+		
+	Manager.change_scene("res://scenes/end_screen.tscn")
 
 
 func run(file: String):
@@ -149,6 +161,10 @@ func run(file: String):
 
 	elif node is Directory.File:
 		writeline(node.itemname + " is a non-executable File")
+		return
+		
+	elif node.permission == Directory.Permission.NO_ACCESS:
+		writeline("No permission to run executable at location")
 		return
 
 	# Command successful, launch program
@@ -186,6 +202,8 @@ func chmod(file: String, perms: String):
 		writeline("Incorrect Permissions")
 	else:
 		writeline("Permissions changed")
+		if node.itemname == "cat-bag.txt":  # Triggers win condition
+			can_end = true
 
 
 func nano(file: String):
@@ -204,6 +222,10 @@ func nano(file: String):
 
 	elif node is Directory.Folder:
 		writeline(node.itemname + " is a Directory")
+		return
+	
+	elif node.permission == Directory.Permission.NO_ACCESS:
+		writeline("No permission to edit file")
 		return
 
 	# Command successful, launch program

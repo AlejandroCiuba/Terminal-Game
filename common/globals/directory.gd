@@ -266,7 +266,7 @@ func change_permission(path: PackedStringArray, permission: Permission, password
 
 					if table[folder_name] is Folder:
 						start = table[folder_name]
-					elif table[folder_name] is File:
+					elif table[folder_name] is File or table[folder_name] is Exec:
 						if path[-1] == folder_name and path_pos == len(path) - 1:  # Final elemnt in the path can be a file
 							start = table[folder_name]
 						else:
