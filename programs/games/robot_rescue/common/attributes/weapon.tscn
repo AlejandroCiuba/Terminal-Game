@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://b58wrwnd1spvr"]
+[gd_scene load_steps=3 format=3 uid="uid://b58wrwnd1spvr"]
 
 [ext_resource type="Script" uid="uid://b2i72u47edlxe" path="res://programs/games/robot_rescue/common/attributes/weapon.gd" id="1_p6yne"]
+[ext_resource type="AudioStream" uid="uid://c155hl80yabxy" path="res://common/assets/sfxpack_3.wav" id="2_rvp61"]
 
 [node name="Weapon" type="Node2D" groups=["weapons"]]
 script = ExtResource("1_p6yne")
+
+[node name="Fire" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_rvp61")

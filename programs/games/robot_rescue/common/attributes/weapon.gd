@@ -8,6 +8,7 @@ var _can_shoot: bool = true
 @export var _laser: PackedScene = preload("res://programs/games/robot_rescue/ents/other/laser.tscn")
 @export var _laser_data: LaserData
 @export var _cool_down: float = 1.0
+@onready var _shoot: AudioStreamPlayer = $Fire
 
 
 func fire(direction: Vector2) -> void:
@@ -21,6 +22,7 @@ func fire(direction: Vector2) -> void:
 		l.collision_layer = _laser_data.laser_collision_layer
 		l.collision_mask = _laser_data.laser_collision_mask
 		shot_fired.emit(l)
+		_shoot.play()
 	
 	
 func _physics_process(delta: float) -> void:

@@ -11,9 +11,12 @@ const COYOTE_THRESHOLD = 0.1
 @export var _speed: float = 400.0
 @export var _jump_force: float = -500.0
 @export var _gravity: float = 100.0
+@onready var hitbox: Area2D = $Hitbox
+@onready var health: int = $Hitbox.health
 @onready var _weapon: Weapon = %Weapon
 @onready var _anim: AnimatedSprite2D = $AnimatedSprite2D
 @onready var _weapon_flip: float = %Weapon.position.x * -1
+@onready var _death_sound: AudioStreamPlayer = $DeathSound
 
 
 func _anim_handler() -> void:
@@ -71,5 +74,6 @@ func _on_no_health() -> void:
 	disable_movement = true
 	velocity.x = 0.0
 	_anim.play("die")
+	_death_sound.play()
 	await _anim.animation_finished
 	player_died.emit()

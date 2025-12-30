@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://c37q2x5cn0eqr"]
+[gd_scene load_steps=12 format=4 uid="uid://c37q2x5cn0eqr"]
 
 [ext_resource type="TileSet" uid="uid://xwbfaqoj3hyv" path="res://common/style/robot_rescue_tiles.tres" id="1_6c7dx"]
 [ext_resource type="Script" uid="uid://dsrc4rycvhiq6" path="res://programs/games/robot_rescue/screens/robot_rescue.gd" id="1_a1nre"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://engkey00jmu8" path="res://programs/games/robot_rescue/ents/enemies/scientist.tscn" id="4_oc15g"]
 [ext_resource type="PackedScene" uid="uid://bfajaqbovjivv" path="res://programs/games/robot_rescue/ents/other/friend.tscn" id="4_wmd8e"]
 [ext_resource type="PackedScene" uid="uid://cy37m371mmi1y" path="res://programs/games/robot_rescue/screens/game_over.tscn" id="5_q5cta"]
+[ext_resource type="PackedScene" uid="uid://puya2502jhwy" path="res://programs/games/robot_rescue/ents/other/health.tscn" id="6_q1fwq"]
 [ext_resource type="PackedScene" uid="uid://b2yb4jhahv8up" path="res://programs/games/robot_rescue/ents/other/dialog.tscn" id="7_reao0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_reao0"]
@@ -17,8 +18,9 @@ size = Vector2(50, 58)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a1nre"]
 size = Vector2(1221, 48)
 
-[node name="RobotRescue" type="Node2D"]
+[node name="RobotRescue" type="Node2D" node_paths=PackedStringArray("player")]
 script = ExtResource("1_a1nre")
+player = NodePath("Robot")
 
 [node name="Tiles" type="Node2D" parent="."]
 
@@ -104,6 +106,9 @@ _jump = -600.0
 _turn_timer = 1.5
 
 [node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Health" parent="UI" instance=ExtResource("6_q1fwq")]
+unique_name_in_owner = true
 
 [node name="GameOver" parent="UI" instance=ExtResource("5_q5cta")]
 unique_name_in_owner = true

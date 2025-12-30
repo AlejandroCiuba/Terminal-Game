@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://rwb4nj42mpxm"]
+[gd_scene load_steps=9 format=3 uid="uid://rwb4nj42mpxm"]
 
 [ext_resource type="Script" uid="uid://bam0pqwjstlsw" path="res://programs/games/robot_rescue/ents/player/robot.gd" id="1_ce0q8"]
 [ext_resource type="SpriteFrames" uid="uid://ncwlj206gv80" path="res://programs/games/robot_rescue/common/resources/robot.tres" id="2_rh8rj"]
 [ext_resource type="PackedScene" uid="uid://b58wrwnd1spvr" path="res://programs/games/robot_rescue/common/attributes/weapon.tscn" id="3_8yjky"]
 [ext_resource type="PackedScene" uid="uid://domdwesslpbyg" path="res://programs/games/robot_rescue/common/attributes/hitbox.tscn" id="4_2wntc"]
 [ext_resource type="Resource" uid="uid://bohru2yirowno" path="res://programs/games/robot_rescue/common/resources/player_weapon.tres" id="4_sxt53"]
+[ext_resource type="AudioStream" uid="uid://c08tbrvvmiw6o" path="res://common/assets/sfxpack_49.wav" id="6_fko5h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qcxli"]
 size = Vector2(12, 21)
@@ -38,5 +39,8 @@ collision_mask = 26
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 position = Vector2(-1, -3.5)
 shape = SubResource("RectangleShape2D_2wntc")
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_fko5h")
 
 [connection signal="no_health" from="Hitbox" to="." method="_on_no_health"]
