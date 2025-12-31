@@ -84,7 +84,7 @@ theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
 text = "Made by Alejandro Ciuba for the Toy Box Game Jam 2025 hosted by ThatTomHall on itch.io. I didn't have as much time as I would have liked, so I apologize for the short game, and if there are any major bugs.
 
-The assets used throughout this game were gotten from solving the puzzles at the start of the jam. I utilized the sprites and tilesets from the Free Sci-Fi Platformer 1-Bit Pixel Art Game Kit found on craftpix.net. And the sound effects are from sfxpack_3.wav and sfx_pack_49.wav.
+The assets used throughout this game were gotten from solving the puzzles at the start of the jam. I utilized the sprites and tilesets from the Free Sci-Fi Platformer 1-Bit Pixel Art Game Kit found on craftpix.net. And the sound effects are from sfxpack_3.wav and sfx_pack_49.wav, with chilltown.wav for the end screen music.
 
 The fonts used are DePixelBreit by ingoFonts and ARCADE_I by Yuji Adachi."
 autowrap_mode = 2

@@ -6,11 +6,12 @@ const MAX_DISPLAY_LENGTH = 75
 
 var can_end: bool = false
 
+var max_scroll: float = 0.0
 const rapid_scroll_wait: float = 1.0
 var rapid_scroll_press: float = 0.0
 var can_rapid_scroll: bool = false
 
-var cmd_hst: PackedStringArray = PackedStringArray([""])
+var cmd_hst: PackedStringArray = PackedStringArray(["", "cat README.txt"])
 var hstind: int = 0
 
 var curr: Node = null
@@ -366,10 +367,20 @@ func ls(dirpath: String, args: String):
 				text = ""
 
 
+func _on_scrollbar_changed():
+	if max_scroll != %ScrollContainer.get_v_scroll_bar().max_value:
+		max_scroll = %ScrollContainer.get_v_scroll_bar().max_value
+		%ScrollContainer.scroll_vertical = max_scroll
+
+
 func _ready() -> void:
 	Directory.create_directory()
-	newline_with_header()
+	#newline_with_header()
+	writeline("cat README.txt", true)
 	set_focus()
+	# https://www.reddit.com/r/godot/comments/qhbi8y/how_to_scroll_a_scrollcontainer_to_the_bottom/
+	%ScrollContainer.get_v_scroll_bar().changed.connect(_on_scrollbar_changed)
+	max_scroll = %ScrollContainer.get_v_scroll_bar().max_value
 	
 	
 func _input(event: InputEvent) -> void:
@@ -402,3 +413,4 @@ func _process(delta: float) -> void:
 		await process_command(text)
 		newline_with_header()
 		set_focus()
+		
