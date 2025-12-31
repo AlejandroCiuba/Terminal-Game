@@ -33,7 +33,7 @@ class DirectoryItem:
 
 class Folder extends DirectoryItem:
 
-	#var _contents: PackedStringArray
+	#var contents: PackedStringArray
 
 	@warning_ignore("shadowed_variable_base_class")
 	func _init(dirname: String, contents: PackedStringArray, permission: Permission, parent: String, password: String) -> void:
@@ -45,7 +45,7 @@ class Folder extends DirectoryItem:
 
 class File extends DirectoryItem:
 
-	#var _contents: String
+	#var contents: String
 
 	@warning_ignore("shadowed_variable_base_class")
 	func _init(filename: String, contents: String, permission: Permission, parent: String, password: String) -> void:
@@ -54,7 +54,7 @@ class File extends DirectoryItem:
 
 class Exec extends DirectoryItem:
 	
-	#var _contents: PackedScene
+	#var contents: PackedScene
 	@warning_ignore("shadowed_variable_base_class")
 	func _init(filename: String, contents: PackedScene, permission: Permission, parent: String, password: String) -> void:
 		super._init(filename, contents, permission, parent, password)

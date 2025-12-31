@@ -296,12 +296,14 @@ func cat(dirpath: String):
 	var contents: PackedStringArray = node.contents.split("\n")
 	print_debug(contents)
 
-	for ln in contents:
-		if len(ln) <= MAX_DISPLAY_LENGTH:
-			writeline(ln)
-		else:
-			for i in range(0, len(ln), MAX_DISPLAY_LENGTH):
-				writeline(ln.substr(i, min(MAX_DISPLAY_LENGTH, len(ln) - i)))
+	var display: TextEdit = TextEdit.new()
+	display.theme = load("res://common/style/terminal.tres")
+	display.editable = false
+	display.text = "\n".join(contents)
+	display.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	display.scroll_fit_content_height = true
+	display.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	%Lines.add_child(display)
 
 
 func cd(dirpath: String):
@@ -344,13 +346,15 @@ func ls(dirpath: String, args: String):
 	var index: int = 0
 
 	if "l" in args:
-		# TABS DON'T WORK IN LINEEDIT
-		writeline("Permission        Name        Type")
-
+		
 		var contents: Dictionary = Directory.get_contents_metadata(node)
+		var max_count: int = contents.keys().map(func (item): return len(item)).max()
+		var spaces: int = max_count if max_count > 8 else 8
+		# TABS DON'T WORK IN LINEEDIT
+		writeline("Permission        Name\tType".replace("\t", " ".repeat(spaces + 4)))
 		for item in contents:
 			text = ("%d\t1%s\t2%s" % [contents[item][0], item, contents[item][1]])\
-			.replace("\t1", " ".repeat(17)).replace("\t2", " ".repeat(12 - len(item)))
+			.replace("\t1", " ".repeat(21)).replace("\t2", " ".repeat(spaces - len(item) + 7))
 			writeline(text)
 
 	else:
