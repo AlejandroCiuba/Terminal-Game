@@ -13,9 +13,12 @@ layout_mode = 2
 theme = ExtResource("1_1f2ss")
 editable = false
 expand_to_text_length = true
+context_menu_enabled = false
+emoji_menu_enabled = false
 
 [node name="Body" type="LineEdit" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_1f2ss")
+context_menu_enabled = false
 caret_blink = true

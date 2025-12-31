@@ -52,6 +52,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("1_7on1g")
+context_menu_enabled = false
 caret_type = 1
 caret_blink = true
 gutters_draw_line_numbers = true
@@ -69,5 +70,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_7on1g")
 editable = false
+context_menu_enabled = false
+emoji_menu_enabled = false
 
 [connection signal="text_changed" from="HBoxContainer/VBoxContainer/Editor" to="." method="_on_editor_text_changed"]
