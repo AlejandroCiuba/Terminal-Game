@@ -6,8 +6,8 @@ var file: Directory.File
 func _ready() -> void:
 
 	%Filename.text = file.itemname
-	%FileInfo.text = "%d Chars" % len(%Editor.text)
 	%Editor.text = file.contents
+	%FileInfo.text = "%d Chars" % len(%Editor.text)
 	entered.emit()
 
 
