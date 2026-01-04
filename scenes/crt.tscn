@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://2lncak4cfysh"]
+
+[ext_resource type="Shader" uid="uid://belb3mxu8677l" path="res://common/style/crt.gdshader" id="1_n4iqi"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ytvr"]
+shader = ExtResource("1_n4iqi")
+shader_parameter/disable_shader = false
+shader_parameter/screen_size = Vector2(1152, 648)
+shader_parameter/disable_curvature = true
+shader_parameter/curvature = 2.0
+shader_parameter/scanline_intensity = 0.5570000264575
+shader_parameter/vignette_power = 0.0
+shader_parameter/blur = 0.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_vjb58"]
+size = Vector2(2304, 1296)
+center_offset = Vector3(576, 324, 0)
+
+[node name="CRT" type="CanvasLayer"]
+layer = 2
+follow_viewport_enabled = true
+
+[node name="CRTEffect" type="MeshInstance2D" parent="."]
+material = SubResource("ShaderMaterial_4ytvr")
+mesh = SubResource("QuadMesh_vjb58")

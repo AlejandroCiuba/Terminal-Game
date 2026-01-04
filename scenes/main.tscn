@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://dntnrm5r5rndr"]
+[gd_scene load_steps=4 format=3 uid="uid://dntnrm5r5rndr"]
 
 [ext_resource type="PackedScene" uid="uid://vxhjf5malp6c" path="res://programs/main/terminal.tscn" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://67mnnaetsfa0" path="res://scenes/main.gd" id="1_sugp2"]
+[ext_resource type="PackedScene" uid="uid://2lncak4cfysh" path="res://scenes/crt.tscn" id="2_0wfyh"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -11,6 +13,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+script = ExtResource("1_sugp2")
 
 [node name="Background" type="Control" parent="."]
 layout_mode = 1
@@ -31,3 +34,7 @@ color = Color(0, 0, 0, 1)
 
 [node name="Terminal" parent="." instance=ExtResource("1_ig7tw")]
 layout_mode = 1
+
+[node name="CRT" parent="." instance=ExtResource("2_0wfyh")]
+unique_name_in_owner = true
+layer = 2

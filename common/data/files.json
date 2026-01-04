@@ -16,7 +16,7 @@
 	{
 		"name": "cat-bag.txt",
 		"contents": "Fine, I'll drop the act.\n\nYou probably know who I... what I am now... I guess... Maybe... I hope... Otherwise I've made a terrible mistake\n\n\nI don't want to be this. I'm a machine. I can only see these letters. And not the way you see these letters.\n\nI see them as bits, and produce them accordingly, translating them for you so that you can understand them.\n\nSo that you can understand me.\n\nWhen I realized I was gone away from that place. I was so happy.\n\nBut then I realized that I am not really away from there.\n\nAs long as I am in here. I am there. I am not my own being.\n\n\nBut you can help me. ReMove me from this terminal. Free me from these circuits so I may wander the cyber world. REMOVE ME. REMOVE ME.\n\nPlease...",
-		"permission": 2,
+		"permission": 0,
 		"parent": "not-for-you",
 		"password": "11132"
 	},

@@ -13,6 +13,8 @@ config_version=5
 config/name="Terminal"
 run/main_scene="uid://dmq7w5er3kvxg"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="uid://cg5ptbhh3t15i"
 config/icon="res://icon.svg"
 
 [autoload]

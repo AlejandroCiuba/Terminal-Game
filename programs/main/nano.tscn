@@ -66,6 +66,7 @@ theme = ExtResource("1_7on1g")
 text = "^X: Quit     ^O: Write     "
 
 [node name="Suboptions" type="LineEdit" parent="HBoxContainer/VBoxContainer/Footer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_7on1g")

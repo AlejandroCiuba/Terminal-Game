@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmq7w5er3kvxg"]
+[gd_scene load_steps=4 format=3 uid="uid://dmq7w5er3kvxg"]
 
 [ext_resource type="Script" uid="uid://bs0y1md2qb6qb" path="res://scenes/menu.gd" id="1_vjb58"]
 [ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://common/style/terminal.tres" id="2_con2f"]
+[ext_resource type="PackedScene" uid="uid://2lncak4cfysh" path="res://scenes/crt.tscn" id="2_mhnvy"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -52,6 +53,15 @@ size_flags_vertical = 4
 theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
 text = "Start"
+alignment = 0
+
+[node name="Options" type="Button" parent="TitleScreen"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Options"
+alignment = 0
 
 [node name="Credits" type="Button" parent="TitleScreen"]
 layout_mode = 2
@@ -59,9 +69,79 @@ size_flags_vertical = 4
 theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
 text = "Credits"
+alignment = 0
+
+[node name="OptionsScreen" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -45.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="OptionsScreen"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_right = 48
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsScreen/MarginContainer"]
+layout_mode = 2
+
+[node name="TerminalEffect" type="Button" parent="OptionsScreen/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+toggle_mode = true
+text = "Disable CRT Effect"
+alignment = 0
+
+[node name="Sounds" type="Button" parent="OptionsScreen/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+toggle_mode = true
+text = "Mute Sounds"
+alignment = 0
+
+[node name="SettingsArea" type="VBoxContainer" parent="OptionsScreen"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+
+[node name="ButtonsArea" type="HBoxContainer" parent="OptionsScreen"]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="OptionsScreen/ButtonsArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Start"
+
+[node name="Title" type="Button" parent="OptionsScreen/ButtonsArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Title
+"
+
+[node name="Credits" type="Button" parent="OptionsScreen/ButtonsArea"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Credits"
 
 [node name="CreditsScreen" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -89,27 +169,42 @@ The assets used throughout this game were gotten from solving the puzzles at the
 The fonts used are DePixelBreit by ingoFonts and ARCADE_I by Yuji Adachi."
 autowrap_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CreditsScreen"]
+[node name="ButtonsArea" type="HBoxContainer" parent="CreditsScreen"]
 layout_mode = 2
 
-[node name="Start" type="Button" parent="CreditsScreen/HBoxContainer"]
+[node name="Start" type="Button" parent="CreditsScreen/ButtonsArea"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
 text = "Start"
 
-[node name="Title" type="Button" parent="CreditsScreen/HBoxContainer"]
+[node name="Options" type="Button" parent="CreditsScreen/ButtonsArea"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
+theme = ExtResource("2_con2f")
+theme_override_font_sizes/font_size = 32
+text = "Options"
+
+[node name="Title" type="Button" parent="CreditsScreen/ButtonsArea"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("2_con2f")
 theme_override_font_sizes/font_size = 32
 text = "Title
 "
 
+[node name="CRT" parent="." instance=ExtResource("2_mhnvy")]
+unique_name_in_owner = true
+
 [connection signal="pressed" from="TitleScreen/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="TitleScreen/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="TitleScreen/Credits" to="." method="_on_credits_pressed"]
-[connection signal="pressed" from="CreditsScreen/HBoxContainer/Start" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="CreditsScreen/HBoxContainer/Title" to="." method="_on_title_pressed"]
+[connection signal="toggled" from="OptionsScreen/MarginContainer/VBoxContainer/TerminalEffect" to="." method="_on_terminal_effect_toggled"]
+[connection signal="toggled" from="OptionsScreen/MarginContainer/VBoxContainer/Sounds" to="." method="_on_sounds_toggled"]
+[connection signal="pressed" from="OptionsScreen/ButtonsArea/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="OptionsScreen/ButtonsArea/Title" to="." method="_on_title_pressed"]
+[connection signal="pressed" from="OptionsScreen/ButtonsArea/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="CreditsScreen/ButtonsArea/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="CreditsScreen/ButtonsArea/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="CreditsScreen/ButtonsArea/Title" to="." method="_on_title_pressed"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://dbqckdnjehchj"]
+[gd_scene load_steps=5 format=3 uid="uid://dbqckdnjehchj"]
 
 [ext_resource type="Script" uid="uid://dd6kxguoh0lwl" path="res://scenes/end_screen.gd" id="1_r65uo"]
 [ext_resource type="Theme" uid="uid://dgly0ah5t47l8" path="res://common/style/terminal.tres" id="1_td7sf"]
+[ext_resource type="PackedScene" uid="uid://2lncak4cfysh" path="res://scenes/crt.tscn" id="3_87vmq"]
 [ext_resource type="AudioStream" uid="uid://2mr72kvhf27k" path="res://common/assets/chilltown.wav" id="3_jc7ji"]
 
 [node name="EndScreen" type="CanvasLayer"]
@@ -63,6 +64,8 @@ layout_mode = 2
 theme = ExtResource("1_td7sf")
 theme_override_font_sizes/font_size = 32
 text = "title"
+
+[node name="CRT" parent="." instance=ExtResource("3_87vmq")]
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true

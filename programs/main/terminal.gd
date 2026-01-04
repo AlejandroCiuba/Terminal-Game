@@ -36,29 +36,27 @@ func get_cmdline() -> LineEdit:
 
 
 func enter_program(inline: bool = false):
+	program.exited.connect(_on_exit_program)
 	if inline:
 		%Lines.add_child(program)
 	else:
 		%Lines.visible = false
-		self.add_child(program)
-	program.exited.connect(_on_exit_subprogram)
-	self.set_process(false)
+		add_child(program)
+	set_process(false)
 
 
 func _on_exit_program():
 	program.exited.disconnect(_on_exit_program)
 	(func (): program.free()).call_deferred()
-	_on_exit_subprogram()
-
-
-func _on_exit_subprogram():
 	%Lines.visible = true
 	set_process(true)
 	set_focus()
 
 
 func set_focus():
-	curr.get_child(1).grab_focus()
+	if not get_cmdline().is_inside_tree():  # Fixes potential error
+		return
+	get_cmdline().grab_focus()
 
 
 func error():
@@ -144,7 +142,7 @@ func remove(file: String):
 	if file != "~" or not can_end:
 		writeline("Files are not removable on this operating system")
 		return
-		
+
 	Manager.change_scene("res://scenes/end_screen.tscn")
 
 
@@ -163,7 +161,7 @@ func run(file: String):
 	elif node is Directory.File:
 		writeline(node.itemname + " is a non-executable File")
 		return
-		
+
 	elif node.permission == Directory.Permission.NO_ACCESS:
 		writeline("No permission to run executable at location")
 		return
@@ -173,8 +171,6 @@ func run(file: String):
 		curr.get_child(1).editable = false
 
 	program = node.contents.instantiate()
-	program.exited.connect(_on_exit_program)
-
 	enter_program()
 
 
@@ -224,8 +220,8 @@ func nano(file: String):
 	elif node is Directory.Folder:
 		writeline(node.itemname + " is a Directory")
 		return
-	
-	elif node.permission == Directory.Permission.NO_ACCESS:
+
+	elif node.permission in [Directory.Permission.NO_ACCESS, Directory.Permission.READ]:
 		writeline("No permission to edit file")
 		return
 
@@ -235,7 +231,6 @@ func nano(file: String):
 
 	program = write_program.instantiate()
 	program.file = node
-
 	enter_program()
 
 
@@ -346,7 +341,7 @@ func ls(dirpath: String, args: String):
 	var index: int = 0
 
 	if "l" in args:
-		
+
 		var contents: Dictionary = Directory.get_contents_metadata(node)
 		var max_count: int = contents.keys().map(func (item): return len(item)).max()
 		var spaces: int = max_count if max_count > 8 else 8
@@ -385,8 +380,8 @@ func _ready() -> void:
 	# https://www.reddit.com/r/godot/comments/qhbi8y/how_to_scroll_a_scrollcontainer_to_the_bottom/
 	%ScrollContainer.get_v_scroll_bar().changed.connect(_on_scrollbar_changed)
 	max_scroll = %ScrollContainer.get_v_scroll_bar().max_value
-	
-	
+
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_text_caret_up") or (event.is_action("ui_text_caret_up") and can_rapid_scroll):
 		hstind = (hstind - 1) % len(cmd_hst)
@@ -402,7 +397,7 @@ func _input(event: InputEvent) -> void:
 
 # _process over _input for set_focus()
 func _process(delta: float) -> void:
-	
+
 	if Input.is_action_pressed("ui_text_caret_up") or Input.is_action_pressed("ui_text_caret_down"):
 		rapid_scroll_press += delta
 	elif Input.is_action_just_released("ui_text_caret_up") or Input.is_action_just_released("ui_text_caret_up"):
@@ -412,9 +407,8 @@ func _process(delta: float) -> void:
 		can_rapid_scroll = true
 
 	if Input.is_action_just_pressed("new_line"):
-		cmd_hst.append(curr.get_child(1).text)
-		var text = Array(curr.get_child(1).text.split(" "))
+		cmd_hst.append(get_cmdline().text)
+		var text = Array(get_cmdline().text.split(" "))
 		await process_command(text)
 		newline_with_header()
 		set_focus()
-		
